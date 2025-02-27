@@ -22,7 +22,15 @@ function Pagination() {
   const totalPage = Math.ceil(tableData?.length / rowsPerPage);
   console.log("totalPage", totalPage);
 
-  //   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const handlprevPage = (pre) => {
+    setCurrentPage((pre) => pre - 1, 1);
+  };
+
+  const handlnextPage = (pre) => {
+    setCurrentPage((pre) => pre + 1, currentPage);
+  };
 
   return (
     <>
@@ -47,6 +55,25 @@ function Pagination() {
             })}
         </tbody>
       </table>
+      <div className="pagination">
+        <button onClick={() => handlprevPage()} disabled={currentPage === 1}>
+          prev
+        </button>
+        {Array.from({ length: totalPage }, (_, i) => i + 1).map(
+          (pageNumber) => (
+            <button
+              key={pageNumber}
+              onClick={() => paginate(pageNumber)}
+              className={currentPage === pageNumber ? "active" : null}
+            >
+              {pageNumber}
+            </button>
+          )
+        )}
+        <button onClick={() => handlnextPage()} disabled={currentPage === 20}>
+          Next
+        </button>
+      </div>
     </>
   );
 }

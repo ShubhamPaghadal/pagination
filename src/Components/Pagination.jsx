@@ -5,11 +5,15 @@ function Pagination() {
   const [table, setTable] = useState();
   const [currentpage, setCurrentpage] = useState(1);
   const [rows, setRows] = useState(10);
+  const [search, setSearch] = useState("");
+  const [passValue, setPassValue] = useState("");
+  // const [searchQuery, setSearchQuery] = useState();
 
   useEffect(() => {
     axios.get("https://dummyjson.com/users?limit=0").then((res) => {
       console.log(res);
       setTable(res?.data);
+      setPassValue(currentItems);
     });
   }, []);
 
@@ -18,7 +22,7 @@ function Pagination() {
   const currentItems = table?.users?.slice(indexOfFirstItem, indexOfLastItem);
   console.log("currentItems", currentItems);
   const totalPage = Math.ceil(table?.total / rows);
-  console.log("totalPage", totalPage);
+  console.log("table", table, totalPage);
 
   // getApicall = (page, row) =>{
   //     // https://dummyjson.com/users?page={page}&row={rowValue}
@@ -59,8 +63,30 @@ function Pagination() {
     setCurrentpage((prev) => Math.max(prev - 1, 1));
   };
 
+  const handleSearch = (e) => {
+    setSearch(e?.target?.value.trim().length = 0 ? setPassValue(currentItems));
+    const FilterOutData = currentItems?.filter((curValue) => {
+      console.log("curValue", curValue);
+      return curValue?.firstName
+        ?.toLowerCase()
+        ?.includes(e?.target?.value?.toLowerCase());
+    });
+    setTable({ ...table, users: FilterOutData });
+    console.log("FilterOutData", FilterOutData);
+    // console.log(e.target.value);
+    // console.log("FilterOutData", FilterOutData);
+    // setCurrentpage(1); // Reset to first page when searching
+  };
+
+  // console.log(handlSearchbar());
   return (
     <>
+      <input
+        type="text"
+        value={search}
+        placeholder="Search name & Email"
+        onChange={(e) => handleSearch(e)}
+      />
       <table className="table" onClick={() => alert("click")}>
         <thead>
           <tr>
