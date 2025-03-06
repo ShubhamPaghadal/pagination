@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./pagination.css";
 function Pagination() {
@@ -10,10 +10,11 @@ function Pagination() {
   // const [searchQuery, setSearchQuery] = useState();
 
   useEffect(() => {
-    axios.get("https://dummyjson.com/users?limit=0").then((res) => {
+    const data = fetch("https:/ /dummyjson.com/users?limit=0").then((res) => {
+      res.json()
       console.log(res);
       setTable(res?.data);
-      setPassValue(currentItems);
+      // setPassValue(currentItems);
     });
   }, []);
 
@@ -24,6 +25,7 @@ function Pagination() {
   const totalPage = Math.ceil(table?.total / rows);
   console.log("table", table, totalPage);
 
+  
   // getApicall = (page, row) =>{
   //     // https://dummyjson.com/users?page={page}&row={rowValue}
   // }
@@ -64,15 +66,15 @@ function Pagination() {
   };
 
   const handleSearch = (e) => {
-    setSearch(e?.target?.value.trim().length = 0 ? setPassValue(currentItems));
-    const FilterOutData = currentItems?.filter((curValue) => {
-      console.log("curValue", curValue);
-      return curValue?.firstName
-        ?.toLowerCase()
-        ?.includes(e?.target?.value?.toLowerCase());
-    });
-    setTable({ ...table, users: FilterOutData });
-    console.log("FilterOutData", FilterOutData);
+    setSearch(e?.target?.value);
+    // const FilterOutData = currentItems?.filter((curValue) => {
+    //   console.log("curValue", curValue);
+    //   return curValue?.firstName
+    //     ?.toLowerCase()
+    //     ?.includes(e?.target?.value?.toLowerCase());
+    // });
+    
+    // setTable({ ...table, users: FilterOutData });
     // console.log(e.target.value);
     // console.log("FilterOutData", FilterOutData);
     // setCurrentpage(1); // Reset to first page when searching
